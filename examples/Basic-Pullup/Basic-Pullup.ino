@@ -16,7 +16,8 @@
 EdgeDebounce button(BUTTON_PIN, PULLUP);  
 
 void setup() {
-  //Nothing to do here. The Library has declared pinMode(BUTTON_PIN, INPUT_PILLUP) for you
+  pinMode(13, HIGH);
+  //No need to declare pinMode(BUTTON_PIN, INPUT_PULLUP). Tyhe Library did it for you.
 }
 
 void loop() {
