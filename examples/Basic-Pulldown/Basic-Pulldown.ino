@@ -17,7 +17,8 @@
 EdgeDebounce button(BUTTON_PIN, PULLDOWN);  
 
 void setup() {
-  //Nothing to do here. The Library has declared pinMode(BUTTON_PIN, INPUT) for you
+  pinMode(13, HIGH);
+  //No need to declare pinMode(BUTTON_PIN, INPUT_PULLUP). Tyhe Library did it for you.
 }
 
 //Debug LED on pin 13 will light up when the button is pressed
