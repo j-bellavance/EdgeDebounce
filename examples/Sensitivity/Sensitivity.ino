@@ -18,6 +18,7 @@ EdgeDebounce button(BUTTON_PIN, PULLUP);
 void setup() {
   pinMode(13, HIGH);
   //No need to declare pinMode(BUTTON_PIN, INPUT_PULLUP). Tyhe Library did it for you.
+  button.setSensitivity(8); //sensitivity defaults to 16. Now changed to 8
 }
 
 void loop() {
