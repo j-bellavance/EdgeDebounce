@@ -17,7 +17,7 @@
 EdgeDebounce button(BUTTON_PIN, PULLDOWN);  
 
 void setup() {
-  pinMode(13, HIGH);
+  pinMode(13, OUTPUT);
   //No need to declare pinMode(BUTTON_PIN, INPUT_PULLUP). Tyhe Library did it for you.
 }
 
