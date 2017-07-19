@@ -24,6 +24,7 @@ EdgeDebounce more(MORE_PIN, PULLUP);
 EdgeDebounce less(LESS_PIN, PULLUP);  
 
 void setup() {
+  pinMode(LED_PIN, OUTPUT);
   Serial.begin(9600);
   Serial.println(F("Begining testing..."));
   Serial.print(F("Sensitivity is now at: "));
