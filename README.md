@@ -1,5 +1,7 @@
 # EdgeDebounce
 
+Version 1.2 : August 23, 2017 (See tutorial for changes)
+
 EdgeDebounce is a lightweight yet capable switch debouncer.
 
 The algorithm was inpired by an article that can be found at: http://www.ganssle.com/debouncing.htm
