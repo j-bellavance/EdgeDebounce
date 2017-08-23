@@ -1,7 +1,0 @@
-EdgeDebounce	KEYWORD1
-closed	KEYWORD2
-pressed	KEYWORD2
-setSensitivity	KEYWORD2
-getSensitivity	KEYWORD2
-PULLUP	LITERAL1
-PULLDOWN	LITERAL1
