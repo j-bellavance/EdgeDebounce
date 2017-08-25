@@ -1,6 +1,6 @@
 # EdgeDebounce
 
-Version 1.2 : August 23, 2017 (See tutorial for changes)
+Version 1.2 : August 25, 2017 (See tutorial for changes)
 
 EdgeDebounce is a lightweight yet capable switch debouncer.
 
