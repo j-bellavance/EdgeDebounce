@@ -6,7 +6,9 @@
  *Version 1.2 :
  *  Added a .begin() method
  *  Renamed .pressed() as .debounce()  (kept .pressed() for backward compatibility)
- *  Added .open()
+ *  Added .update()
+ *  Added .isClosed()
+ *  Added .isOpen()
  *  Added .rose()
  *  Added .fell()
  *
@@ -15,13 +17,13 @@
  *It is designed to be lightweight
  *PSEUDOCODE
  * 1) Repeat
- * 1)   Read the switch 16 times
+ * 1)   Read the switch n times
  * 2) Until all reads are identical
  * 3) Return the switch's status
  *    
  *The number of times the switch is repetitively read can be set between 1 and 32
  *Switches can use either an external pulldown resistor or the internal pullup resistor
- *pinMode() is set by the constructor
+ *pinMode() is set by begin()
 */ 
 
 #include <Arduino.h>
@@ -37,7 +39,7 @@ EdgeDebounce::EdgeDebounce(byte pin, pinType mode) {
 
 //begin================================================
 void EdgeDebounce::begin() {
-	if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
+  if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
   else                  pinMode(MYpin, INPUT);
 }//begin-----------------------------------------------
 
@@ -48,15 +50,15 @@ void EdgeDebounce::begin() {
 //Thanks to Jiggy-Ninja for the expression
 //--------------------------------------------------------------------------------
 void EdgeDebounce::setSensitivity(byte w) {
-	if (w >= 1 && w <= 32) {
-		MYsensitivity = w;
+  if (w >= 1 && w <= 32) {
+    MYsensitivity = w;
     debounceDontCare = ~((1UL<<w)-1);
-	}
+  }
 }//setSensitivity--------------------------------------------------------------------
 
- //getSensitivity==================================================================
- //Returns the current sensitivity of Debounce
- //--------------------------------------------------------------------------------
+//getSensitivity==================================================================
+//Returns the current sensitivity of Debounce
+//--------------------------------------------------------------------------------
 byte EdgeDebounce::getSensitivity() {
   return MYsensitivity;
 }//getSensitivity--------------------------------------------------------------------
@@ -97,12 +99,12 @@ byte EdgeDebounce::pressed() {
 //-------------------------------------------------------------------------------
 void EdgeDebounce::update() {
   byte newStatus = debounce();
-	if (MYmode == PULLUP) newStatus = !newStatus;
+  if (MYmode == PULLUP) newStatus = !newStatus;
   if (MYstatus == OPEN && newStatus == CLOSED) MYrose = true;
   else                                         MYrose = false; 
-	if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
+  if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
   else                                         MYfell = false;
-	MYstatus = newStatus;
+  MYstatus = newStatus;
 }//update-------------------------------------------------------------------------
 
 //updatingMethods=============================================
@@ -114,4 +116,3 @@ bool EdgeDebounce::isClosed() const { return MYstatus; }
 bool EdgeDebounce::isOpen()   const { return !MYstatus; }
 bool EdgeDebounce::rose() const { return MYrose; }
 bool EdgeDebounce::fell() const { return MYfell; }
-
