@@ -37,7 +37,7 @@ EdgeDebounce::EdgeDebounce(byte pin, pinType mode) {
 
 //begin================================================
 void EdgeDebounce::begin() {
-	if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
+  if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
   else                  pinMode(MYpin, INPUT);
 }//begin-----------------------------------------------
 
@@ -48,15 +48,15 @@ void EdgeDebounce::begin() {
 //Thanks to Jiggy-Ninja for the expression
 //--------------------------------------------------------------------------------
 void EdgeDebounce::setSensitivity(byte w) {
-	if (w >= 1 && w <= 32) {
-		MYsensitivity = w;
+  if (w >= 1 && w <= 32) {
+    MYsensitivity = w;
     debounceDontCare = ~((1UL<<w)-1);
-	}
+  }
 }//setSensitivity--------------------------------------------------------------------
 
- //getSensitivity==================================================================
- //Returns the current sensitivity of Debounce
- //--------------------------------------------------------------------------------
+//getSensitivity==================================================================
+//Returns the current sensitivity of Debounce
+//--------------------------------------------------------------------------------
 byte EdgeDebounce::getSensitivity() {
   return MYsensitivity;
 }//getSensitivity--------------------------------------------------------------------
@@ -84,25 +84,25 @@ byte EdgeDebounce::debounce() {
 //Left here for backward compatibility
 //---------------------------------------
 byte EdgeDebounce::pressed() {
-	return debounce();
+  return debounce();
 }//pressed-------------------------------
 
 //updateStatus===================================================================
 //After releasing EdgeDebounceLite, I realized that EdgeDebounce could do more
 //With this small piece of code, EdgeDebounce can return if a switch is
-//  .isclosed();  //Conducting current
-//  .isopen();    //Not conducting current
+//  .closed();  //Conducting current
+//  .open();    //Not conducting current
 //  .rose();      //Just went from open to closed
 //  .fell();      //just went from closed to open
 //-------------------------------------------------------------------------------
 void EdgeDebounce::update() {
   byte newStatus = debounce();
-	if (MYmode == PULLUP) newStatus = !newStatus;
+  if (MYmode == PULLUP) newStatus = !newStatus;
   if (MYstatus == OPEN && newStatus == CLOSED) MYrose = true;
   else                                         MYrose = false; 
-	if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
+  if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
   else                                         MYfell = false;
-	MYstatus = newStatus;
+  MYstatus = newStatus;
 }//update-------------------------------------------------------------------------
 
 //updatingMethods=============================================
@@ -112,6 +112,8 @@ bool EdgeDebounce::rose()    { update(); return MYrose; }
 bool EdgeDebounce::fell()    { update(); return MYfell; }
 
 //statusMethods=====================================================
+//When a switch has to track more than one states/edges
+//Preceeded with only one call to .update()
 bool EdgeDebounce::getClosed() const { return MYstatus; }
 bool EdgeDebounce::getOpen()   const { return !MYstatus; }
 bool EdgeDebounce::getRose() const { return MYrose; }
