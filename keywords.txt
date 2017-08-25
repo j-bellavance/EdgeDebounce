@@ -4,10 +4,12 @@ update	KEYWORD2
 pressed	KEYWORD2
 open	KEYWORD2
 closed	KEYWORD2
-isOpen	KEYWORD2
-isClosed	KEYWORD2
 rose	KEYWORD2
 fell	KEYWORD2
+getOpen	KEYWORD2
+getClosed	KEYWORD2
+getRose	KEYWORD2
+getFell	KEYWORD2
 setSensitivity	KEYWORD2
 getSensitivity	KEYWORD2
 PULLUP	LITERAL1
