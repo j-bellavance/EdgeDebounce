@@ -24,7 +24,6 @@ void setup() {
 }
 
 void loop() {
-  button.update();
   if(button.fell()) {                     //If the switch closed and re-opened
     Serial.println(F("Was pressed"));         //Do the action
   }  

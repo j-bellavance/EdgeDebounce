@@ -34,10 +34,10 @@ void setup() {
 
 void loop() {
   button.update();
-  if (button.rose())  {                //Just closed?
+  if (button.getRose())  {                //Just closed?
     chrono = millis();                   //Reset Chrono
   }  
-  if (button.fell()) {                 //Just opened?
+  if (button.getFell()) {                 //Just opened?
     if (millis() - chrono < limit)       //If lower than limit
       Serial.println(F("Short"));          //print "Short"
     else                                 //Otherwise

@@ -36,13 +36,14 @@ void setup() {
 //repeatRequired===============================================================================
 bool repeatRequired() {
   button.update();
-  if (button.rose()) {                             //If the switch was just closed
-     chrono = millis() + start;                      //Set chronometer to when the bursts should start
-     return true;                                    //And return "Required"
+  if (button.getOpen()) return false;         //If the switch is open, we are finished
+  if (button.getRose()) {                     //If the switch was just closed
+     chrono = millis() + start;                 //Set chronometer to when the bursts should start
+     return true;                               //And return "Required"
   }
-  if (button.isClosed() && millis() >= chrono) {   //If time is up
-    chrono = millis() + burst;                       //Reset chronometer for next burst
-    return true;                                     //And return "Required"
+  if (millis() >= chrono) {                   //If time is up
+    chrono = millis() + burst;                  //Reset chronometer for next burst
+    return true;                                //And return "Required"
   }
   return false;
 }//repeatRequired------------------------------------------------------------------------------
