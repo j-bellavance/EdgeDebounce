@@ -6,7 +6,9 @@
  *Version 1.2 :
  *  Added a .begin() method
  *  Renamed .pressed() as .debounce()  (kept .pressed() for backward compatibility)
- *  Added .open()
+ *  Addes .update()
+ *  Added .isClosed
+ *  Added .isOpen()
  *  Added .rose()
  *  Added .fell()
  *
@@ -15,13 +17,13 @@
  *It is designed to be lightweight
  *PSEUDOCODE
  * 1) Repeat
- * 1)   Read the switch 16 times
+ * 1)   Read the switch n times
  * 2) Until all reads are identical
  * 3) Return the switch's status
  *    
  *The number of times the switch is repetitively read can be set between 1 and 32
  *Switches can use either an external pulldown resistor or the internal pullup resistor
- *pinMode() is set by the constructor
+ *pinMode() is set by .begin()
 */
  
 #ifndef EdgeDebounce_h
@@ -40,27 +42,27 @@ class EdgeDebounce
     EdgeDebounce(byte pin, pinType mode);  //Constructor
     void begin();                          //Perform pinMode() initialisation
     byte debounce();                       //PULLDOWN mode: ON=1, OFF=0 ; PULLUP mode ON=0, OFF=1
-		byte pressed();                        //Same as debounce(): Kept for compatibility with V1.1 
-		void update();
+    byte pressed();                        //Same as debounce(): Kept for compatibility with V1.1 
+    void update();
     bool closed();
     bool open();
-		bool isClosed() const;                 //Returns true if the switch is closed
+    bool isClosed() const;                 //Returns true if the switch is closed
     bool isOpen() const;                   //Returns true if the switch is open
     bool rose() const;                     //Returns true if on the rising edge of the signal (Just closed)
-		bool fell() const;                     //Returns true if on the falling edge of the signal (Just opened)
-		void setSensitivity(byte w);           //Set debounce reads (1..32)
+    bool fell() const;                     //Returns true if on the falling edge of the signal (Just opened)
+    void setSensitivity(byte w);           //Set debounce reads (1..32)
     byte getSensitivity();                 //Returns the current sensitivity of Debounce
     
   private:
     //methods
-		//attributes
+    //attributes
     byte MYpin;                                   //The switch's pin
-    pinType MYmode = PULLUP;                         //The switch's mode (PULLUP or PULLDOWN)
-    pinStatus MYstatus;                                //The current Status of the pin
+    pinType MYmode = PULLUP;                      //The switch's mode (PULLUP or PULLDOWN)
+    pinStatus MYstatus;                           //The current Status of the pin
     bool MYrose;                                  //True if the pin is rising
     bool MYfell;                                  //True if the pin is falling
-		byte MYsensitivity = 16;                      //Current sensitivity (1..32)
-		unsigned long debounceDontCare = 0xffff0000;  //Don't care mask
+    byte MYsensitivity = 16;                      //Current sensitivity (1..32)
+    unsigned long debounceDontCare = 0xffff0000;  //Don't care mask
 };
 
 #endif;
