@@ -11,24 +11,23 @@
 
 #include <EdgeDebounce.h>
 
-#define BUTTON_PIN 4
+#define TOGGLE_PIN 4
 #define LED_PIN 13
 
 //Create an instance of Debounce and name it button
 //button is tied to pin BUTTON_PIN and is in PULLUP mode
-EdgeDebounce button(BUTTON_PIN, PULLUP);  
+EdgeDebounce toggle(TOGGLE_PIN, PULLUP);  
 
 bool switchState;
 
 void setup() {
-  button.begin();                   //Set up button
+  toggle.begin();                   //Set up button
   pinMode(LED_PIN, OUTPUT);         //Set up LED pin
-  switchState = button.closed();    //Set up state to current pin state
+  switchState = toggle.closed();    //Set up state to current pin state
 }
 
 void loop() {
-  button.update();
-  if (button.fell()) {            //If the button clicked (rose and then fell)
+  if (toggle.fell()) {            //If the button clicked (rose and then fell)
     switchState = !switchState;   //Toggle state
   }
   digitalWrite(LED_PIN, switchState);

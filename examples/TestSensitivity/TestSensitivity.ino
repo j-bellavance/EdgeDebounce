@@ -39,14 +39,12 @@ void setup() {
 }
 
 void loop() {
-  more.update();
-  if (more.fell()) {  //PULLUP button just released
+  if (more.fell()) {
     test.setSensitivity(test.getSensitivity() + 1);
     Serial.print(F("Sensitivity is now at: "));
     Serial.println(test.getSensitivity());
   }
-  less.update();
-  if (less.fell()) {  //PULLUP button just released
+  if (less.fell()) {
     test.setSensitivity(test.getSensitivity() - 1);
     Serial.print(F("Sensitivity is now at: "));
     Serial.println(test.getSensitivity());

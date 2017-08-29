@@ -18,6 +18,7 @@
 #include <EdgeDebounce.h>
 
 #define BUTTON_PIN 4
+#define LED_PIN 13
 
 //Create an instance of Debounce and name it button
 //button is tied to pin BUTTON_PIN and is in PULLUP mode
@@ -28,7 +29,7 @@ unsigned long limit = 500;   //milliseconds (2 seconds)
 
 void setup() {
   button.begin();
-  pinMode(13, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
   Serial.begin(9600);
 }
 

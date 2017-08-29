@@ -10,17 +10,18 @@
  * If we keep the key pressed until a predetermidened time, it will send repeatedly the same key
  * over and over at a specific rate until we release the key.
  * 
+ * The character that will be sent is 'A'
  * We will use another switch to simulate the enter key.
 */
 
 #include <EdgeDebounce.h>
 
-#define BUTTON_PIN 2
+#define A_PIN 2
 #define ENTER_PIN 3
 
 //Create an instance of Debounce and name it button
 //button is tied to pin BUTTON_PIN and is in PULLUP mode
-EdgeDebounce button(BUTTON_PIN, PULLUP);
+EdgeDebounce keyA(A_PIN, PULLUP);
 EdgeDebounce enter(ENTER_PIN, PULLUP);
 
 unsigned long start = 1000;     //milliseconds (1 second)
@@ -28,29 +29,28 @@ unsigned long burst = 100;      //milliseconds (1/10th of a second)
 unsigned long chrono;           //Set chronometer
 
 void setup() {
-  button.begin();
+  keyA.begin();
   enter.begin();
   Serial.begin(9600);
 }
 
-//repeatRequired===============================================================================
+//repeatRequired==============================================================================
 bool repeatRequired() {
-  button.update();
-  if (button.getOpen()) return false;         //If the switch is open, we are finished
-  if (button.getRose()) {                     //If the switch was just closed
-     chrono = millis() + start;                 //Set chronometer to when the bursts should start
-     return true;                               //And return "Required"
+  keyA.update();
+  if (keyA.getOpen()) return false;     //If the switch is open, we are finished
+  if (keyA.getRose()) {                 //If the switch was just closed
+     chrono = millis() + start;           //Set chronometer to when the bursts should start
+     return true;                         //And return "Required"
   }
-  if (millis() >= chrono) {                   //If time is up
-    chrono = millis() + burst;                  //Reset chronometer for next burst
-    return true;                                //And return "Required"
+  if (millis() >= chrono) {             //If time is up
+    chrono = millis() + burst;            //Reset chronometer for next burst
+    return true;                          //And return "Required"
   }
   return false;
-}//repeatRequired------------------------------------------------------------------------------
+}//repeatRequired-----------------------------------------------------------------------------
 
 void loop() {
   if (repeatRequired()) Serial.print('A');
-  enter.update();
   if (enter.fell()) Serial.println();
   
   //Do other stuff

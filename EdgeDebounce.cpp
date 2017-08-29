@@ -27,82 +27,79 @@
 #include <Arduino.h>
 #include "EdgeDebounce.h"
 
-//Constructor=======================================
+EdgeDebounce::EdgeDebounce() {}
+//Constructor==========================================
 //pin: the pin connected to the switch
-//--------------------------------------------------
+//-----------------------------------------------------
 EdgeDebounce::EdgeDebounce(byte pin, pinType mode) {
   MYpin = pin;
   MYmode = mode;
-}//Debounce------------------------------------------
+}//Debounce--------------------------------------------
 
 //begin================================================
 void EdgeDebounce::begin() {
-  if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
+	if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
   else                  pinMode(MYpin, INPUT);
 }//begin-----------------------------------------------
 
-
-//setSensitivity==================================================================
-//Sets the number of times a switch is read repeatedly by the debouncer routine
+//setSensitivity=========================================
+//Sets the number of times a switch is read repeatedly
 //It defaults to 16 times. Allowable values are 1..32
 //Thanks to Jiggy-Ninja for the expression
-//--------------------------------------------------------------------------------
+//-------------------------------------------------------
 void EdgeDebounce::setSensitivity(byte w) {
-  if (w >= 1 && w <= 32) {
-    MYsensitivity = w;
+	if (w >= 1 && w <= 32) {
+		MYsensitivity = w;
     debounceDontCare = ~((1UL<<w)-1);
-  }
-}//setSensitivity--------------------------------------------------------------------
+	}
+}//setSensitivity----------------------------------------
 
-//getSensitivity==================================================================
-//Returns the current sensitivity of Debounce
-//--------------------------------------------------------------------------------
+ //getSensitivity================================
+ //Returns the current sensitivity of Debounce
+ //----------------------------------------------
 byte EdgeDebounce::getSensitivity() {
   return MYsensitivity;
-}//getSensitivity--------------------------------------------------------------------
+}//getSensitivity--------------------------------
 
 //debounce=================================================================================================
 //Debounces the switch connected to "MYpin"
-//A counter, MYsensitivity, can be set between 1 and 32. 
+//A counter, "MYsensitivity", can be set between 1 and 32. 
 //This value represents how many times the switch is read consecutively. 
-//The switch is read MYsensitivity times to look for MYsensitivity consecutive HIGH or LOW
+//The switch is read "MYsensitivity" times to look for "MYsensitivity" consecutive HIGH or LOW
 //If unsuccessfull, it means that a change is occuring at that same moment
 //and that either a rising or falling edge of the signal is actualy occuring.
-//It can also mean that there is currently some Electro Mechanic Interferences (EMI) occuring
-//The pin is reread repetetively MYsensitivity times until the signal is confirmed stable.
-//---------------------------------------------------------------------------------------------------------------
-byte EdgeDebounce::debounce() {
+//It can also mean that there is some Electro Mechanic Interferences (EMI) occuring
+//The pin is reread repetetively "MYsensitivity" times until the signal is confirmed stable.
+//---------------------------------------------------------------------------------------------------------
+byte EdgeDebounce::pressed() { return debounce(MYpin); }   //Kept for compatibility with V1.0
+byte EdgeDebounce::debounce() { return debounce(MYpin); }  //If instantiated with pin
+byte EdgeDebounce::pin(byte pin) { return debounce(pin); } //If instantiated without pin
+//---------------------------------------------------------------------------------------------------------
+byte EdgeDebounce::debounce(byte pin) {
   unsigned long pinStatus;
   do {
     pinStatus = 0xffffffff;
-    for (byte i = 1; i <= MYsensitivity; i++) pinStatus = (pinStatus << 1) | digitalRead(MYpin);
+    for (byte i = 1; i <= MYsensitivity; i++) pinStatus = (pinStatus << 1) | digitalRead(pin);
   } while ((pinStatus != debounceDontCare) && (pinStatus != 0xffffffff));
   return byte(pinStatus & 0x00000001);  
 }//debounce------------------------------------------------------------------------------------------------
 
-//pressed================================
-//Left here for backward compatibility
-//---------------------------------------
-byte EdgeDebounce::pressed() {
-  return debounce();
-}//pressed-------------------------------
-
 //updateStatus===================================================================
 //After releasing EdgeDebounceLite, I realized that EdgeDebounce could do more
 //With this small piece of code, EdgeDebounce can return if a switch is
-//  .closed();  //Conducting current
-//  .open();    //Not conducting current
+//  .isclosed();  //Conducting current
+//  .isopen();    //Not conducting current
 //  .rose();      //Just went from open to closed
 //  .fell();      //just went from closed to open
 //-------------------------------------------------------------------------------
 void EdgeDebounce::update() {
   byte newStatus = debounce();
-  if (MYmode == PULLUP) newStatus = !newStatus;
+	if (MYmode == PULLUP) newStatus = !newStatus;
   if (MYstatus == OPEN && newStatus == CLOSED) MYrose = true;
   else                                         MYrose = false; 
-  if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
+	if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
   else                                         MYfell = false;
-  MYstatus = newStatus;
+	MYstatus = newStatus;
 }//update-------------------------------------------------------------------------
 
 //updatingMethods=============================================
@@ -112,8 +109,6 @@ bool EdgeDebounce::rose()    { update(); return MYrose; }
 bool EdgeDebounce::fell()    { update(); return MYfell; }
 
 //statusMethods=====================================================
-//When a switch has to track more than one states/edges
-//Preceeded with only one call to .update()
 bool EdgeDebounce::getClosed() const { return MYstatus; }
 bool EdgeDebounce::getOpen()   const { return !MYstatus; }
 bool EdgeDebounce::getRose() const { return MYrose; }
