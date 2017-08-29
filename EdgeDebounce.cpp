@@ -38,7 +38,7 @@ EdgeDebounce::EdgeDebounce(byte pin, pinType mode) {
 
 //begin================================================
 void EdgeDebounce::begin() {
-	if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
+  if (MYmode == PULLUP) pinMode(MYpin, INPUT_PULLUP);
   else                  pinMode(MYpin, INPUT);
 }//begin-----------------------------------------------
 
@@ -48,10 +48,10 @@ void EdgeDebounce::begin() {
 //Thanks to Jiggy-Ninja for the expression
 //-------------------------------------------------------
 void EdgeDebounce::setSensitivity(byte w) {
-	if (w >= 1 && w <= 32) {
-		MYsensitivity = w;
+  if (w >= 1 && w <= 32) {
+    MYsensitivity = w;
     debounceDontCare = ~((1UL<<w)-1);
-	}
+  }
 }//setSensitivity----------------------------------------
 
  //getSensitivity================================
@@ -94,12 +94,12 @@ byte EdgeDebounce::debounce(byte pin) {
 //-------------------------------------------------------------------------------
 void EdgeDebounce::update() {
   byte newStatus = debounce();
-	if (MYmode == PULLUP) newStatus = !newStatus;
+  if (MYmode == PULLUP) newStatus = !newStatus;
   if (MYstatus == OPEN && newStatus == CLOSED) MYrose = true;
   else                                         MYrose = false; 
-	if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
+  if (MYstatus == CLOSED && newStatus == OPEN) MYfell = true;
   else                                         MYfell = false;
-	MYstatus = newStatus;
+  MYstatus = newStatus;
 }//update-------------------------------------------------------------------------
 
 //updatingMethods=============================================
@@ -108,7 +108,7 @@ bool EdgeDebounce::open()    { update(); return !MYstatus; }
 bool EdgeDebounce::rose()    { update(); return MYrose; }
 bool EdgeDebounce::fell()    { update(); return MYfell; }
 
-//statusMethods=====================================================
+//statusMethods==============================================
 bool EdgeDebounce::getClosed() const { return MYstatus; }
 bool EdgeDebounce::getOpen()   const { return !MYstatus; }
 bool EdgeDebounce::getRose() const { return MYrose; }
