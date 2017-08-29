@@ -43,29 +43,29 @@ class EdgeDebounce
     byte debounce();                       //PULLDOWN mode: ON=1, OFF=0 ; PULLUP mode ON=0, OFF=1
     byte debounce(byte pin);
     byte pin(byte pin);
-		byte pressed();                        //Same as debounce(): Kept for compatibility with V1.1 
-		void update();
+    byte pressed();                        //Same as debounce(): Kept for compatibility with V1.1 
+    void update();
     bool closed();
     bool open();
     bool rose();
     bool fell();
-		bool getClosed() const;                //Returns true if the switch is closed
+    bool getClosed() const;                //Returns true if the switch is closed
     bool getOpen() const;                  //Returns true if the switch is open
-    bool getRose() const;                 //Returns true if on the rising edge of the signal (Just closed)
-		bool getFell() const;                  //Returns true if on the falling edge of the signal (Just opened)
-		void setSensitivity(byte w);           //Set debounce reads (1..32)
+    bool getRose() const;                  //Returns true if on the rising edge of the signal (Just closed)
+    bool getFell() const;                  //Returns true if on the falling edge of the signal (Just opened)
+    void setSensitivity(byte w);           //Set debounce reads (1..32)
     byte getSensitivity();                 //Returns the current sensitivity of Debounce
     
   private:
     //methods
-		//attributes
+    //attributes
     byte MYpin;                                   //The switch's pin
-    pinType MYmode = PULLUP;                         //The switch's mode (PULLUP or PULLDOWN)
-    pinStatus MYstatus;                                //The current Status of the pin
+    pinType MYmode = PULLUP;                      //The switch's mode (PULLUP or PULLDOWN)
+    pinStatus MYstatus;                           //The current Status of the pin
     bool MYrose;                                  //True if the pin is rising
     bool MYfell;                                  //True if the pin is falling
-		byte MYsensitivity = 16;                      //Current sensitivity (1..32)
-		unsigned long debounceDontCare = 0xffff0000;  //Don't care mask
+    byte MYsensitivity = 16;                      //Current sensitivity (1..32)
+    unsigned long debounceDontCare = 0xffff0000;  //Don't care mask
 };
 
 #endif;
